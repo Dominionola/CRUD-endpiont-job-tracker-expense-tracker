@@ -25,10 +25,18 @@ router
     const newExpense = {
       id: expenses.length + 1,
       amount: req.body.amount,
-      details: req.body.amount,
+      details: req.body.details,
       type: req.body.type,
       date: newDate,
     };
+
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "New expense succesfuly logged",
+        data: newExpense,
+      });
   });
 
 export default router;
