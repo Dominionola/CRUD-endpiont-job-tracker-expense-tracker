@@ -14,12 +14,10 @@ router
       .json({ message: "successfully got posted jobs", data: jobs });
   })
   .post((req, res) => {
-    const today = new Date();
-    const newDate = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`;
     const newJob = {
       id: jobs.length + 1,
       company: req.body.company,
-      dateApplied: newDate,
+      dateApplied: new Date(),
       status: req.body.status,
     };
     jobs.push(newJob);
