@@ -1,30 +1,25 @@
 import express from "express";
+import Job from "../../models/Jobs.js";
 
 const router = express.Router();
 
-const jobs = [
-  { id: 1, company: "NCDMB", dateApplied: "2/05/2026", status: "pending" },
-];
+router.route("/jobs").get(async (req, res) => {
+  try {
+    const jobs = await Job.find();
+    return res.status(200).json({ message: "successfully got posted jobs", data: jobs });
+  } catch (error) {
+    return res.status(500).json({ message: "server error", error: error.message });
+  }
+});
 
-router
-  .route("/jobs")
-  .get((req, res) => {
-    res
-      .status(200)
-      .json({ message: "successfully got posted jobs", data: jobs });
-  })
-  .post((req, res) => {
-    const newJob = {
-      id: jobs.length + 1,
-      company: req.body.company,
-      dateApplied: new Date(),
-      status: req.body.status,
-    };
-    jobs.push(newJob);
-    res
-      .status(201)
-      .json({ message: "successfully posted a new job", data: jobs });
-  });
+router.route("/jobs").post(async (req, res) => {
+  try {
+    const job = await Job.create({ company: req.body.company, status: req.body.status });
+    return res.status(201).json({ message: "successfully posted a new job", data: job });
+  } catch (error) {
+    return res.status(400).json({ message: "could not create job", error: error.message });
+  }
+});
 
 router
   .route("/jobs/:id")
@@ -38,7 +33,7 @@ router
     }
 
     res.status(200).json({
-      message: `Job with this ID$ {jobId} is avalaible`,
+      message: `Job with this ID ${jobId} is avalaible`,
       data: foundId,
     });
   })

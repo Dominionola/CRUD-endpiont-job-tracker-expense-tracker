@@ -9,6 +9,8 @@ const jobSchema = new mongoose.Schema(
     },
     status: {
       type: String,
+      enum: ["applied", "interview", "offer"],
+      default: "applied",
       required: [true, "what is the status"],
     },
   },
@@ -17,3 +19,5 @@ const jobSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
+
+const Job = mongoose.model("Job", jobSchema);
